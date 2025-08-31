@@ -1,0 +1,165 @@
+# Market Intelligence System Configuration
+
+# Data Collection Settings
+data_collection:
+  target_hashtags:
+    - "#nifty50"
+    - "#sensex"
+    - "#intraday"
+    - "#banknifty"
+    - "#stockmarket"
+    - "#trading"
+    - "#investing"
+  
+  target_keywords:
+    - "NIFTY"
+    - "SENSEX"
+    - "BANKNIFTY"
+    - "intraday"
+    - "stock market"
+    - "trading"
+    - "investing"
+    - "bullish"
+    - "bearish"
+  
+  collection_settings:
+    min_tweets: 2000
+    time_window_hours: 24
+    max_retries: 3
+    batch_size: 100
+
+# Rate Limiting and Anti-Bot Measures
+rate_limiting:
+  requests_per_minute: 30
+  delay_between_requests: 2.0
+  exponential_backoff: true
+  max_delay: 60.0
+  
+  user_agents:
+    - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    - "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+    - "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"
+    - "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101"
+
+# Data Processing Settings
+data_processing:
+  text_cleaning:
+    remove_urls: true
+    remove_mentions: false
+    remove_hashtags: false
+    normalize_unicode: true
+    remove_emojis: false
+    lowercase: true
+  
+  language_detection:
+    supported_languages: ["en", "hi", "ta", "te", "bn", "mr", "gu", "kn", "ml", "pa"]
+    default_language: "en"
+  
+  deduplication:
+    similarity_threshold: 0.85
+    content_hash_length: 64
+    fuzzy_matching: true
+
+# Analysis Settings
+analysis:
+  sentiment_analysis:
+    model: "vader"
+    custom_lexicon: true
+    domain_specific_terms:
+      positive: ["bullish", "buy", "long", "uptrend", "breakout", "rally"]
+      negative: ["bearish", "sell", "short", "downtrend", "breakdown", "crash"]
+      neutral: ["hold", "wait", "consolidation", "sideways"]
+  
+  feature_engineering:
+    tfidf_max_features: 1000
+    ngram_range: [1, 3]
+    min_df: 2
+    max_df: 0.95
+  
+  signal_generation:
+    sentiment_weight: 0.4
+    volume_weight: 0.3
+    hashtag_weight: 0.2
+    mention_weight: 0.1
+    confidence_threshold: 0.6
+
+# Storage Settings
+storage:
+  data_directory: "data"
+  raw_data_path: "data/raw"
+  processed_data_path: "data/processed"
+  signals_path: "data/signals"
+  
+  parquet_settings:
+    compression: "snappy"
+    row_group_size: 100000
+    use_dictionary: true
+    write_statistics: true
+  
+  backup_settings:
+    enable_backup: true
+    backup_interval_hours: 6
+    max_backups: 10
+
+# Visualization Settings
+visualization:
+  dashboard:
+    port: 8050
+    host: "localhost"
+    debug: false
+  
+  plotting:
+    theme: "plotly_white"
+    color_scheme:
+      positive: "#00ff00"
+      negative: "#ff0000"
+      neutral: "#808080"
+    
+  streaming:
+    update_interval_seconds: 30
+    max_data_points: 1000
+    sampling_rate: 0.1
+
+# Performance Settings
+performance:
+  concurrent_processing:
+    max_workers: 4
+    chunk_size: 1000
+  
+  memory_management:
+    max_memory_usage_gb: 4.0
+    enable_garbage_collection: true
+    gc_threshold: 0.8
+  
+  caching:
+    enable_cache: true
+    cache_ttl_hours: 24
+    max_cache_size_mb: 100
+
+# Logging Settings
+logging:
+  level: "INFO"
+  format: "{time:YYYY-MM-DD HH:mm:ss} | {level} | {name}:{function}:{line} | {message}"
+  file_path: "logs/market_intelligence.log"
+  max_file_size_mb: 10
+  backup_count: 5
+  
+  handlers:
+    console: true
+    file: true
+    error_file: true
+
+# Error Handling
+error_handling:
+  max_retries: 3
+  retry_delay_seconds: 5
+  exponential_backoff: true
+  log_errors: true
+  continue_on_error: true
+
+# Development Settings
+development:
+  debug_mode: false
+  test_mode: false
+  mock_data: false
+  verbose_output: false
